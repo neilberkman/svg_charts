@@ -1,0 +1,105 @@
+# SVG Charts
+
+```elixir
+System.put_env("SVG_CHARTS_BUILD", "true")
+
+Mix.install([
+  {:svg_charts, path: Path.join(__DIR__, "..")},
+  {:rustler, "~> 0.37"},
+  {:kino, "~> 0.14"}
+])
+```
+
+## Bar Chart
+
+```elixir
+SvgCharts.render!(%{
+  "type" => "bar",
+  "width" => 630,
+  "height" => 410,
+  "title_text" => "Weekly Email Marketing",
+  "title_height" => 30,
+  "legend_margin" => %{"top" => 35},
+  "series_list" => [
+    %{"name" => "Email", "data" => [120.0, 132.0, 101.0, 134.0, 90.0, 230.0, 210.0]},
+    %{"name" => "Union Ads", "data" => [220.0, 182.0, 191.0, 234.0, 290.0, 330.0, 310.0]}
+  ],
+  "x_axis_data" => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+})
+|> Kino.HTML.new()
+```
+
+## Line Chart
+
+```elixir
+SvgCharts.render!(%{
+  "type" => "line",
+  "width" => 630,
+  "height" => 410,
+  "title_text" => "Temperature Forecast",
+  "title_height" => 30,
+  "legend_margin" => %{"top" => 35},
+  "series_list" => [
+    %{"name" => "High", "data" => [11.0, 11.0, 15.0, 13.0, 12.0, 13.0, 10.0]},
+    %{"name" => "Low", "data" => [1.0, -2.0, 2.0, 5.0, 3.0, 2.0, 0.0]}
+  ],
+  "x_axis_data" => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+})
+|> Kino.HTML.new()
+```
+
+## Pie Chart
+
+```elixir
+SvgCharts.render!(%{
+  "type" => "pie",
+  "width" => 500,
+  "height" => 400,
+  "title_text" => "Traffic Sources",
+  "title_height" => 30,
+  "legend_margin" => %{"top" => 35},
+  "series_list" => [
+    %{"name" => "Search", "data" => [1048.0]},
+    %{"name" => "Direct", "data" => [735.0]},
+    %{"name" => "Email", "data" => [580.0]},
+    %{"name" => "Social", "data" => [484.0]},
+    %{"name" => "Video", "data" => [300.0]}
+  ]
+})
+|> Kino.HTML.new()
+```
+
+## Horizontal Bar Chart
+
+```elixir
+SvgCharts.render!(%{
+  "type" => "horizontal_bar",
+  "width" => 500,
+  "height" => 300,
+  "title_text" => "Languages",
+  "title_height" => 30,
+  "legend_margin" => %{"top" => 35},
+  "series_list" => [
+    %{"name" => "Stars", "data" => [18.0, 15.0, 12.0, 8.0, 5.0]}
+  ],
+  "y_axis_data" => ["Elixir", "Rust", "Go", "Python", "Ruby"]
+})
+|> Kino.HTML.new()
+```
+
+## From JSON String
+
+```elixir
+~s({
+  "type": "bar",
+  "width": 400,
+  "height": 300,
+  "title_text": "From Raw JSON",
+  "title_height": 30,
+  "legend_margin": {"top": 35},
+  "series_list": [{"name": "Data", "data": [5.0, 15.0, 25.0, 10.0]}],
+  "x_axis_data": ["Q1", "Q2", "Q3", "Q4"]
+})
+|> SvgCharts.render!()
+|> Kino.HTML.new()
+```
