@@ -29,6 +29,20 @@ defmodule SvgCharts do
       })
 
       svg = SvgCharts.render!(~s({"type": "line", "series_list": [{"name": "A", "data": [1.0, 2.0]}], "x_axis_data": ["X", "Y"]}))
+
+  ## Legend layout
+
+  Chart options are passed through to `charts-rs`. Use `"legend_margin"` to
+  position a legend below title text:
+
+      %{
+        "title_text" => "Framework Comparison",
+        "sub_title_text" => "Phoenix vs. Rails vs. Next.js",
+        "legend_margin" => %{"top" => 60}
+      }
+
+  Set `"legend_show" => false` to omit the legend, which is often useful for a
+  single-series chart.
   """
 
   @doc """

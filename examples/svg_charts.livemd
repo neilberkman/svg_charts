@@ -69,6 +69,36 @@ SvgCharts.render!(%{
 |> Kino.HTML.new()
 ```
 
+## Radar Chart
+
+`legend_margin` keeps the legend below the title and subtitle. For a
+single-series radar chart, set `"legend_show" => false` instead.
+
+```elixir
+SvgCharts.render!(%{
+  "type" => "radar",
+  "width" => 600,
+  "height" => 470,
+  "title_text" => "Framework Comparison",
+  "sub_title_text" => "Phoenix vs. Rails vs. Next.js",
+  "legend_margin" => %{"top" => 60},
+  "series_list" => [
+    %{"name" => "Phoenix", "data" => [92.0, 88.0, 85.0, 60.0, 95.0, 70.0]},
+    %{"name" => "Rails", "data" => [65.0, 70.0, 90.0, 80.0, 55.0, 78.0]},
+    %{"name" => "Next.js", "data" => [80.0, 72.0, 94.0, 74.0, 68.0, 84.0]}
+  ],
+  "indicators" => [
+    %{"name" => "Performance", "max" => 100.0},
+    %{"name" => "Scalability", "max" => 100.0},
+    %{"name" => "Ecosystem", "max" => 100.0},
+    %{"name" => "Learning Curve", "max" => 100.0},
+    %{"name" => "Realtime", "max" => 100.0},
+    %{"name" => "Deployment", "max" => 100.0}
+  ]
+})
+|> Kino.HTML.new()
+```
+
 ## Horizontal Bar Chart
 
 ```elixir

@@ -47,6 +47,28 @@ defmodule SvgChartsTest do
     assert svg =~ "<svg"
   end
 
+  test "render radar legend below title and subtitle" do
+    svg =
+      radar_config(%{"legend_margin" => %{"top" => 60}})
+      |> SvgCharts.render!()
+
+    title_y = text_y(svg, "Radar title")
+    subtitle_y = text_y(svg, "Radar subtitle")
+    legend_y = text_y(svg, "Radar series")
+
+    assert title_y < subtitle_y
+    assert subtitle_y < legend_y
+  end
+
+  test "hide radar legend" do
+    svg =
+      radar_config(%{"legend_show" => false})
+      |> SvgCharts.render!()
+
+    assert svg =~ "<svg"
+    refute svg =~ "Radar series"
+  end
+
   test "render! returns SVG directly" do
     svg =
       SvgCharts.render!(%{
@@ -80,5 +102,31 @@ defmodule SvgChartsTest do
     assert_raise RuntimeError, ~r/SvgCharts render error/, fn ->
       SvgCharts.render!("{invalid json")
     end
+  end
+
+  defp radar_config(overrides) do
+    Map.merge(
+      %{
+        "type" => "radar",
+        "width" => 600,
+        "height" => 470,
+        "title_text" => "Radar title",
+        "sub_title_text" => "Radar subtitle",
+        "series_list" => [%{"name" => "Radar series", "data" => [9.0, 8.0, 7.0]}],
+        "indicators" => [
+          %{"name" => "Performance", "max" => 10.0},
+          %{"name" => "Scalability", "max" => 10.0},
+          %{"name" => "Ecosystem", "max" => 10.0}
+        ]
+      },
+      overrides
+    )
+  end
+
+  defp text_y(svg, text) do
+    pattern = ~r/<text[^>]*\by="([\d.]+)"[^>]*>\s*#{Regex.escape(text)}\s*<\/text>/
+    [_, value] = Regex.run(pattern, svg)
+    {value, ""} = Float.parse(value)
+    value
   end
 end
